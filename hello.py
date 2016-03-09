@@ -1,8 +1,9 @@
-bind="0.0.0.0:8080"
+#! /usr/bin/python
+from urlparse import parse_qsl
 
-def app (environ, start_response):
-    status = '200 OK'
-    response_headers = [('Content-type','text/plain')]
-    start_response(status, response_headers)
-    options = '\r\n'.join(environ['QUERY_STRING'].split("&"))
-    return [options]
+def app(env, start_response):
+   start_response('200 OK', [('Content-Type', 'text/plain')])
+   returnString = ''
+   for (key, value) in parse_qsl(env['QUERY_STRING'], keep_blank_values=True):
+      returnString += key + '=' + value + '\n'
+   return returnString
